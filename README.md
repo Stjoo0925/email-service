@@ -52,8 +52,8 @@ EMAIL-SERVICE/
 
 ```xml
 # 환경변수 설정
-MYSQL_ROOT_PASSWORD=root
-MYSQL_DATABASE=email_service
+MYSQL_ROOT_PASSWORD= "루드계정 비밀번호"
+MYSQL_DATABASE= "데이터베이스 이름"
 MYSQL_USER= "비밀번호를 입력하세요"
 MYSQL_PASSWORD= "아이디를 입력하세요"
 ```
