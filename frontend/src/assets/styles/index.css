@@ -1,0 +1,16 @@
+@import "./reset.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "GothicA1-Light";
+  src: url("/GothicA1-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+body {
+  font-family: "GothicA1-Light", "sans-serif";
+}

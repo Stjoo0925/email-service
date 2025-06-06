@@ -51,11 +51,15 @@ EMAIL-SERVICE/
 ```
 
 ```xml
-# 환경변수 설정
+# 데이터베이스 환경변수
 MYSQL_ROOT_PASSWORD= "루드계정 비밀번호"
 MYSQL_DATABASE= "데이터베이스 이름"
 MYSQL_USER= "비밀번호를 입력하세요"
 MYSQL_PASSWORD= "아이디를 입력하세요"
+
+# 프론트 환경변수
+REACT_APP_API_BASE_URL= "백앤드API주소"
+
 ```
 
 ## 3. 기능별 계획
