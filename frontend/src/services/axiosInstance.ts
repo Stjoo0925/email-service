@@ -6,7 +6,7 @@ import axios, {
 } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || "/api", // 환경변수 또는 기본값
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "/api", // 환경변수 또는 기본값
   timeout: 5000, // 5초 타임아웃
   headers: {
     "Content-Type": "application/json",

@@ -1,6 +1,9 @@
 # email-service
 
-> 이메일 이차인증 서비스 구현
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.0-brightgreen?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
+[![Next.js](https://img.shields.io/badge/Next.js-15.3.3-black?style=for-the-badge&logo=nextdotjs)](https://nextjs.org/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-blue?style=for-the-badge&logo=mysql)](https://www.mysql.com/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-blue?style=for-the-badge&logo=docker)](https://docs.docker.com/compose/)
 
 ## 1. 프로젝트 개요
 
@@ -35,7 +38,8 @@ EMAIL-SERVICE/
 │   │   │   └── resources/
 │   │   │       ├── templates/ (optional for error pages)
 │   │   │       └── application.yml
-│   ├── build.gradle
+│   │   │
+│   │   └── build.gradle
 │   └── settings.gradle
 |   └── Dockerfile
 ├── frontend/
@@ -59,6 +63,13 @@ MYSQL_PASSWORD= "비밀번호를 입력하세요"
 
 # 프론트 환경변수 (Next.js)
 NEXT_PUBLIC_API_BASE_URL= "백엔드API주소"
+
+# 백앤드 환경변수 (Spring Boot)
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME="이메일 주소를 입력하세요"
+MAIL_PASSWORD="이메일 비밀번호를 입력하세요"
+JWT_SECRET="JWT 시크릿키를 입력하세요"
 ```
 
 ## 3. 기능별 계획
