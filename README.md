@@ -4,10 +4,10 @@
 
 ## 1. 프로젝트 개요
 
-- **목표**: Spring Boot와 React를 결합하여 로그인, 아이디/비밀번호 찾기, 이메일 이차인증 기능을 구현한 미니 프로젝트를 개발하며, Docker Compose를 활용해 개발 및 배포 환경을 통합적으로 관리.
+- **목표**: Spring Boot와 Next.js를 결합하여 로그인, 아이디/비밀번호 찾기, 이메일 이차인증 기능을 구현한 미니 프로젝트를 개발하며, Docker Compose를 활용해 개발 및 배포 환경을 통합적으로 관리.
 - **기술 스택**:
   - **백엔드**: Spring Boot 3.x, Spring Security, Spring Data JPA, JavaMailSender, MySQL
-  - **프론트엔드**: React 18.x, Axios (HTTP 클라이언트), React Router
+  - **프론트엔드**: Next.js 15.x, Axios (HTTP 클라이언트), Tailwind CSS
   - **컨테이너화**: Docker, Docker Compose
   - **빌드 도구**: Gradle (백엔드), npm/yarn (프론트엔드)
 - **주요 기능**:
@@ -15,7 +15,7 @@
   - 아이디/비밀번호 찾기 (이메일 기반)
   - 이메일 이차인증 (OTP 전송 및 검증)
   - 프론트엔드와 백엔드 간 REST API 연동
-- **배포 환경**: Docker Compose를 사용해 MySQL, Spring Boot, React 애플리케이션을 컨테이너화하여 통합 실행.
+- **배포 환경**: Docker Compose를 사용해 MySQL, Spring Boot, Next.js 애플리케이션을 컨테이너화하여 통합 실행.
 
 ## 2. 프로젝트 구조
 
@@ -43,23 +43,22 @@ EMAIL-SERVICE/
 │   │   ├── components/
 │   │   ├── pages/
 │   │   ├── services/
-│   │   └── App.js
+│   │   └── assets/
 │   ├── package.json
 │   └── Dockerfile
 ├── docker-compose.yml
 └── README.md
 ```
 
-```xml
+```env
 # 데이터베이스 환경변수
 MYSQL_ROOT_PASSWORD= "루드계정 비밀번호"
 MYSQL_DATABASE= "데이터베이스 이름"
-MYSQL_USER= "비밀번호를 입력하세요"
-MYSQL_PASSWORD= "아이디를 입력하세요"
+MYSQL_USER= "아이디를 입력하세요"
+MYSQL_PASSWORD= "비밀번호를 입력하세요"
 
-# 프론트 환경변수
-REACT_APP_API_BASE_URL= "백앤드API주소"
-
+# 프론트 환경변수 (Next.js)
+NEXT_PUBLIC_API_BASE_URL= "백엔드API주소"
 ```
 
 ## 3. 기능별 계획
@@ -72,13 +71,13 @@ REACT_APP_API_BASE_URL= "백앤드API주소"
   - 비밀번호는 BCrypt로 해싱하여 MySQL에 저장.
   - 이메일 중복 체크 후 에러 응답.
 - **프론트엔드**:
-  - React 컴포넌트로 회원가입 폼 제공.
+  - Next.js 페이지(`/signup`)에서 회원가입 폼 제공.
   - Axios로 백엔드 API 호출, 성공/실패 메시지 표시.
 - **흐름**:
   1. 사용자가 회원가입 폼에 정보 입력.
-  2. React에서 POST 요청 전송.
+  2. Next.js에서 POST 요청 전송.
   3. Spring Boot가 데이터 검증 후 DB 저장.
-  4. 성공/실패 응답을 React로 반환하여 UI에 반영.
+  4. 성공/실패 응답을 Next.js로 반환하여 UI에 반영.
 
 ### 3.2. 로그인
 
@@ -89,8 +88,8 @@ REACT_APP_API_BASE_URL= "백앤드API주소"
   - 로그인 성공 시 OTP 생성 및 JavaMailSender로 이메일 전송.
   - `/api/auth/verify-otp` 엔드포인트로 OTP 검증.
 - **프론트엔드**:
-  - 로그인 폼에서 입력값을 받아 Axios로 API 호출.
-  - 성공 시 OTP 입력 페이지로 리다이렉트.
+  - Next.js 페이지(`/login`)에서 로그인 폼 제공.
+  - 성공 시 OTP 입력 페이지(`/otp`)로 이동.
   - OTP 입력 후 검증 요청 전송.
 - **흐름**:
   1. 사용자가 로그인 폼에 정보 입력.
@@ -105,7 +104,7 @@ REACT_APP_API_BASE_URL= "백앤드API주소"
   - `/api/auth/find-id` 엔드포인트 (POST)로 요청 처리.
   - 이름과 이메일 일치 여부 확인 후 이메일로 아이디 전송.
 - **프론트엔드**:
-  - 아이디 찾기 폼 제공.
+  - Next.js 페이지(`/find-id`)에서 아이디 찾기 폼 제공.
   - 성공 시 사용자에게 이메일 발송 메시지 표시.
 - **흐름**:
   1. 사용자가 이름과 이메일 입력.
@@ -119,8 +118,8 @@ REACT_APP_API_BASE_URL= "백앤드API주소"
   - `/api/auth/reset-password` 엔드포인트 (POST)로 재설정 링크 전송.
   - 링크에 포함된 토큰으로 유효성 검증 후 `/api/auth/reset-password/{token}`으로 비밀번호 변경.
 - **프론트엔드**:
-  - 비밀번호 재설정 요청 폼 제공.
-  - 재설정 링크 클릭 시 새로운 비밀번호 입력 폼 표시.
+  - Next.js 페이지(`/reset-password`)에서 비밀번호 재설정 요청 폼 제공.
+  - 재설정 링크 클릭 시 새로운 비밀번호 입력 폼 표시(`/reset-password/[token]`).
 - **흐름**:
   1. 사용자가 이메일 입력.
   2. 백엔드에서 토큰 생성 및 이메일 전송.
@@ -135,7 +134,7 @@ REACT_APP_API_BASE_URL= "백앤드API주소"
   - JavaMailSender로 OTP 전송.
   - `/api/auth/verify-otp`로 OTP 유효성 확인.
 - **프론트엔드**:
-  - OTP 입력 폼 제공.
+  - Next.js 페이지(`/otp`)에서 OTP 입력 폼 제공.
   - 검증 성공/실패에 따라 UI 업데이트.
 - **흐름**:
   1. 로그인 성공 후 OTP 전송.
@@ -148,11 +147,11 @@ REACT_APP_API_BASE_URL= "백앤드API주소"
 - **구성**:
   - **MySQL 컨테이너**: 사용자 데이터 저장.
   - **Spring Boot 컨테이너**: 백엔드 API 제공.
-  - **React 컨테이너**: 프론트엔드 애플리케이션 제공.
+  - **Next.js 컨테이너**: 프론트엔드 애플리케이션 제공.
 - **환경 설정**:
   - MySQL: 포트 3306, 환경 변수로 DB 설정.
   - Spring Boot: 포트 8080, MySQL과 연동.
-  - React: 포트 3000, Spring Boot API와 통신.
+  - Next.js: 포트 3000, Spring Boot API와 통신.
 - **docker-compose.yml 구조**:
   - 서비스 정의: `db`, `backend`, `frontend`.
   - 네트워크 설정: 단일 브리지 네트워크로 컨테이너 간 통신.
@@ -160,20 +159,20 @@ REACT_APP_API_BASE_URL= "백앤드API주소"
 - **흐름**:
   1. `docker-compose up`으로 모든 서비스 실행.
   2. MySQL이 먼저 초기화 후 Spring Boot 연결.
-  3. React 앱이 백엔드 API 호출.
+  3. Next.js 앱이 백엔드 API 호출.
 
 ## 5. 개발 및 배포 계획
 
 - **개발 단계**:
   1. Gradle로 Spring Boot 프로젝트 초기화, 의존성 추가 (Spring Security, JPA, JavaMailSender 등).
-  2. React 프로젝트 생성, 필요한 라이브러리 설치 (Axios, React Router).
+  2. Next.js 프로젝트 생성, 필요한 라이브러리 설치 (Axios, Tailwind CSS 등).
   3. REST API 엔드포인트 설계 및 구현.
-  4. React 컴포넌트 개발 및 API 연동.
+  4. Next.js 페이지/컴포넌트 개발 및 API 연동.
   5. Docker Compose 파일 작성 및 테스트.
 - **테스트**:
   - 단위 테스트: JUnit으로 백엔드 서비스 테스트.
   - 통합 테스트: Postman으로 API 테스트.
-  - 프론트엔드 테스트: React Testing Library 사용.
+  - 프론트엔드 테스트: React Testing Library, Jest 등 사용.
 - **배포**:
   - 로컬에서 Docker Compose로 테스트.
   - CI/CD 파이프라인 고려 (예: GitHub Actions).
