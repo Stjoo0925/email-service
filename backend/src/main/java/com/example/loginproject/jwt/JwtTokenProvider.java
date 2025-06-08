@@ -1,48 +1,27 @@
 package com.example.loginproject.jwt;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.security.Keys;
-import java.nio.charset.StandardCharsets;
-
 import java.util.Date;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class JwtTokenProvider {
-
-    @Value("${jwt.secret}")
+    @Value("${JWT_SECRET:default_secret}")
     private String secretKey;
 
-    private final long validityInMilliseconds = 1000 * 60 * 60; // 1시간
-
-    // 토큰 생성
-    public String createToken(String username) {
-        Claims claims = Jwts.claims().setSubject(username);
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
-
+    public String createToken(String email) {
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+        Key key = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256) // 수정
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24시간
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    // 토큰에서 사용자명 추출
-    public String getUsername(String token) {
-        return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8))).build().parseClaimsJws(token).getBody().getSubject(); // 수정
-    }
-
-    // 토큰 유효성 검증
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8))).build().parseClaimsJws(token); // 수정
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
     }
 }

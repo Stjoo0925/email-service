@@ -16,8 +16,10 @@ RUN yarn build || npm run build
 
 # 2단계: 정적 파일 서빙 (nginx)
 FROM nginx:alpine
-# 빌드된 정적 파일을 nginx html 폴더로 복사
-COPY --from=build /app/build /usr/share/nginx/html
+# 빌드된 Next.js 정적 파일들 (JS, CSS 등)을 Nginx의 _next/static 경로로 복사
+COPY --from=build /app/.next/static /usr/share/nginx/html/_next/static
+# Next.js 프로젝트의 public 폴더 내용을 Nginx 웹루트의 / 로 복사
+COPY --from=build /app/public /usr/share/nginx/html/
 # 3000번 포트 노출
 EXPOSE 3000
 # nginx 실행
