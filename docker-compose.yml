@@ -1,8 +1,6 @@
-version: "3.8"
-
 services:
   # MySQL 데이터베이스 서비스
-  db:
+  mysql:
     image: mysql:8.0
     container_name: mysql
     environment:
@@ -17,62 +15,50 @@ services:
     networks:
       - backend
     healthcheck:
-      test:
-        [
-          "CMD",
-          "mysqladmin",
-          "ping",
-          "-h",
-          "localhost",
-          "-u",
-          "${MYSQL_USER}",
-          "-p${MYSQL_PASSWORD}",
-        ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 5s
       interval: 5s
       retries: 20
       start_period: 40s
 
-  # Spring Boot 백엔드 서비스
+  # 백엔드 서비스
   backend:
     build: ./backend
     container_name: backend
-    ports:
-      - "8080:8080"
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      # 메일 설정
       MAIL_HOST: ${MAIL_HOST}
       MAIL_PORT: ${MAIL_PORT}
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
+      # JWT 설정
       JWT_SECRET: ${JWT_SECRET}
+      # 데이터베이스 연결 설정
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
     depends_on:
-      db:
+      mysql:
         condition: service_healthy
     networks:
       - backend
+    ports:
+      - "8080:8080"
 
-  # Next.js 프론트엔드 서비스
   frontend:
     build: ./frontend
     container_name: frontend
-    ports:
-      - "3000:80"
     environment:
       NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
     depends_on:
-      db:
-        condition: service_healthy
+      - backend
     networks:
       - backend
+    ports:
+      - "3000:80"
 
-# MySQL 데이터 영속성 볼륨
 volumes:
   db_data:
 
-# 서비스 간 통신을 위한 네트워크
 networks:
   backend:
-    driver: bridge
