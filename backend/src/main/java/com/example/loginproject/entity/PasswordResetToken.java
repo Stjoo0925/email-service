@@ -10,6 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "password_reset_tokens", indexes = {
+    @Index(name = "idx_reset_token_email", columnList = "email"),
+    @Index(name = "idx_reset_token_token", columnList = "token")
+})
 public class PasswordResetToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,15 +34,23 @@ public class PasswordResetToken {
     @Column(nullable = false)
     private boolean used;
 
+    @Column
+    private LocalDateTime usedAt;
+
     public PasswordResetToken(String email, String token) {
         this.email = email;
         this.token = token;
         this.createdAt = LocalDateTime.now();
-        this.expiresAt = LocalDateTime.now().plusMinutes(30); // 30분 유효
+        this.expiresAt = LocalDateTime.now().plusMinutes(30);
         this.used = false;
     }
 
     public boolean isValid() {
         return !used && LocalDateTime.now().isBefore(expiresAt);
     }
-} 
+
+    public void markAsUsed() {
+        this.used = true;
+        this.usedAt = LocalDateTime.now();
+    }
+}

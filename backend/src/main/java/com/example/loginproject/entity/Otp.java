@@ -10,6 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "otps", indexes = {
+    @Index(name = "idx_otp_email", columnList = "email"),
+    @Index(name = "idx_otp_code", columnList = "code")
+})
 public class Otp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +25,10 @@ public class Otp {
     @Column(nullable = false)
     private String code;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OtpType type;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -30,15 +38,29 @@ public class Otp {
     @Column(nullable = false)
     private boolean used;
 
-    public Otp(String email, String code) {
+    @Column
+    private LocalDateTime usedAt;
+
+    public Otp(String email, String code, OtpType type) {
         this.email = email;
         this.code = code;
+        this.type = type;
         this.createdAt = LocalDateTime.now();
-        this.expiresAt = LocalDateTime.now().plusMinutes(5); // 5분 유효
+        this.expiresAt = LocalDateTime.now().plusMinutes(5);
         this.used = false;
     }
 
     public boolean isValid() {
         return !used && LocalDateTime.now().isBefore(expiresAt);
     }
-} 
+
+    public void markAsUsed() {
+        this.used = true;
+        this.usedAt = LocalDateTime.now();
+    }
+
+    public enum OtpType {
+        EMAIL_VERIFICATION,
+        PASSWORD_RESET
+    }
+}
