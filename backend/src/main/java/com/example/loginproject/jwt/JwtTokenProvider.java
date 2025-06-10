@@ -1,7 +1,6 @@
 package com.example.loginproject.jwt;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.util.Date;
@@ -23,5 +22,30 @@ public class JwtTokenProvider {
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24시간
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+            Key key = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public String getEmailFromToken(String token) {
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+        Key key = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }
