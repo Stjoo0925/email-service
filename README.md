@@ -5,6 +5,8 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue?style=for-the-badge&logo=mysql)](https://www.mysql.com/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue?style=for-the-badge&logo=docker)](https://docs.docker.com/compose/)
 
+### 더 자세한 내용은 [!링크](https://deepwiki.com/Stjoo0925/email-service)
+
 ## 1. 프로젝트 개요
 
 - **목표**: Spring Boot와 Next.js를 결합하여 로그인, 아이디/비밀번호 찾기, 이메일 이차인증 기능을 구현한 미니 프로젝트를 개발하며, Docker Compose를 활용해 개발 및 배포 환경을 통합적으로 관리.
