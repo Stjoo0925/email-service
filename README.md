@@ -1,9 +1,10 @@
 # email-service
 
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.0-brightgreen?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
-[![Next.js](https://img.shields.io/badge/Next.js-15.3.3-black?style=for-the-badge&logo=nextdotjs)](https://nextjs.org/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-blue?style=for-the-badge&logo=mysql)](https://www.mysql.com/)
-[![Docker](https://img.shields.io/badge/Docker-Compose-blue?style=for-the-badge&logo=docker)](https://docs.docker.com/compose/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.0-brightgreen?logo=springboot)](https://spring.io/projects/spring-boot)
+[![Next.js](https://img.shields.io/badge/Next.js-15.3.3-black?logo=nextdotjs)](https://nextjs.org/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-blue?logo=mysql)](https://www.mysql.com/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-blue?logo=docker)](https://docs.docker.com/compose/)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Stjoo0925/email-service)
 
 ### 더 자세한 내용은 [!링크](https://deepwiki.com/Stjoo0925/email-service)
 
