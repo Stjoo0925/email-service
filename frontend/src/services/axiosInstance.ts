@@ -4,9 +4,10 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
+import { getCookie } from "../utils/cookie";
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "/api", // 환경변수 또는 기본값
+  baseURL: process.env.NEXT_PUBLIC_SPRING_BASE_URL || "/api", // 환경변수 또는 기본값
   timeout: 5000, // 5초 타임아웃
   headers: {
     "Content-Type": "application/json",
@@ -16,9 +17,9 @@ const axiosInstance: AxiosInstance = axios.create({
 // 요청 인터셉터 (JWT 토큰 자동 첨부 등)
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // 필요시 토큰 등 추가
-    // const token = localStorage.getItem("token");
-    // if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
+    const token = typeof window !== "undefined" ? getCookie("token") : null;
+    if (token && config.headers)
+      config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => Promise.reject(error)

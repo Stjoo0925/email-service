@@ -61,7 +61,7 @@ MYSQL_USER= "아이디를 입력하세요"
 MYSQL_PASSWORD= "비밀번호를 입력하세요"
 
 # 프론트 환경변수 (Next.js)
-SPRING_BASE_URL=http://localhost:8080
+NEXT_PUBLIC_SPRING_BASE_URL=http://localhost:8080
 
 # 백엔드 환경변수 (Spring Boot)
 MAIL_HOST=smtp.gmail.com
@@ -92,6 +92,7 @@ docker compose down
 ### 4.2. 개별 서비스 실행
 
 #### 백엔드 (Spring Boot)
+
 ```bash
 cd backend
 ./gradlew build
@@ -99,6 +100,7 @@ cd backend
 ```
 
 #### 프론트엔드 (Next.js)
+
 ```bash
 cd frontend
 npm install
@@ -108,6 +110,7 @@ npm run dev
 ## 5. API 문서
 
 애플리케이션 실행 후 다음 URL에서 Swagger UI를 통해 API 문서를 확인할 수 있습니다:
+
 ```
 http://localhost:8080/swagger-ui/index.html
 ```
@@ -115,16 +118,19 @@ http://localhost:8080/swagger-ui/index.html
 ## 6. 주요 기능 설명
 
 ### 6.1. 회원가입/로그인
+
 - 이메일, 비밀번호, 이름으로 회원가입
 - JWT 기반 인증
 - 이메일 중복 체크
 
 ### 6.2. 이메일 인증
+
 - OTP 기반 이메일 인증
 - 비밀번호 재설정 링크 발송
 - 아이디 찾기 이메일 발송
 
 ### 6.3. 보안
+
 - Spring Security를 통한 인증/인가
 - JWT 토큰 기반 세션 관리
 - 비밀번호 암호화 (BCrypt)
@@ -132,18 +138,21 @@ http://localhost:8080/swagger-ui/index.html
 ## 7. 개발 가이드
 
 ### 7.1. 백엔드 개발
+
 - Spring Boot 3.5.0 기반
 - Gradle 빌드 도구 사용
 - JPA/Hibernate로 데이터베이스 연동
 - Spring Security로 보안 처리
 
 ### 7.2. 프론트엔드 개발
+
 - Next.js 15.x 기반
 - Tailwind CSS로 스타일링
 - Axios로 API 통신
 - React Hooks 사용
 
 ### 7.3. Docker 개발
+
 - 멀티 스테이지 빌드 사용
 - 환경 변수로 설정 관리
 - 볼륨으로 데이터 영속성 보장
