@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import Input from "../../components/ui/Input";
-import Button from "../../components/ui/Button";
 import axiosInstance from "../../services/axiosInstance";
 import { useRouter } from "next/router";
+import LoginForm from "../../components/auth/LoginForm";
+import SignupForm from "../../components/auth/SignupForm";
+import Footer from "../../components/ui/Footer";
 
 // Tailwind 기반 슬라이드 전환형 로그인/회원가입 단일 페이지
 const AuthPage: React.FC = () => {
@@ -71,118 +72,52 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-emerald-500 to-teal-400 px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-emerald-500 to-teal-400 px-4">
+      <div className="text-5xl font-bold mb-6 text-white">Email Service</div>
       <div className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden lg:flex">
         {/* 슬라이드 패널 */}
         <div
-          className={`flex-1 p-8 transition-transform duration-700 lg:w-1/2 ${
+          className={`flex-1 p-8 transition-transform duration-700 lg:w-1/2 flex items-center justify-center ${
             mode === "signin"
               ? "translate-x-0"
               : "-translate-x-full lg:translate-x-0 lg:-translate-y-full"
           }`}
         >
-          {/* 로그인 폼 */}
-          <h2 className="text-3xl font-bold mb-6 text-emerald-600">로그인</h2>
-          <form onSubmit={submitLogin} className="space-y-4">
-            <Input
-              label="이메일"
-              type="email"
-              name="email"
-              value={loginForm.email}
-              onChange={handleLoginChange}
-              required
-            />
-            <Input
-              label="비밀번호"
-              type="password"
-              name="password"
-              value={loginForm.password}
-              onChange={handleLoginChange}
-              required
-            />
-            {error && mode === "signin" && (
-              <p className="text-sm text-red-500">{error}</p>
-            )}
-            <Button type="submit" loading={loading}>
-              로그인
-            </Button>
-            <p className="text-sm text-center">
-              계정이 없으신가요?{" "}
-              <span
-                className="text-emerald-600 cursor-pointer hover:underline"
-                onClick={() => {
-                  setError("");
-                  setMode("signup");
-                }}
-              >
-                회원가입
-              </span>
-            </p>
-          </form>
+          <LoginForm
+            loginForm={loginForm}
+            onChange={handleLoginChange}
+            onSubmit={submitLogin}
+            loading={loading}
+            error={mode === "signin" ? error : ""}
+            switchToSignup={() => {
+              setError("");
+              setMode("signup");
+            }}
+          />
         </div>
 
         {/* 회원가입 폼 */}
         <div
-          className={`flex-1 p-8 transition-transform duration-700 lg:w-1/2 ${
+          className={`flex-1 p-8 transition-transform duration-700 lg:w-1/2 flex items-center justify-center ${
             mode === "signup"
               ? "translate-x-0"
               : "translate-x-full lg:translate-x-0 lg:translate-y-full"
           }`}
         >
-          <h2 className="text-3xl font-bold mb-6 text-teal-600">회원가입</h2>
-          <form onSubmit={submitSignup} className="space-y-4">
-            <Input
-              label="이름"
-              name="name"
-              value={signupForm.name}
-              onChange={handleSignupChange}
-              required
-            />
-            <Input
-              label="이메일"
-              type="email"
-              name="email"
-              value={signupForm.email}
-              onChange={handleSignupChange}
-              required
-            />
-            <Input
-              label="비밀번호"
-              type="password"
-              name="password"
-              value={signupForm.password}
-              onChange={handleSignupChange}
-              required
-            />
-            <Input
-              label="비밀번호 확인"
-              type="password"
-              name="confirmPassword"
-              value={signupForm.confirmPassword}
-              onChange={handleSignupChange}
-              required
-            />
-            {error && mode === "signup" && (
-              <p className="text-sm text-red-500">{error}</p>
-            )}
-            <Button type="submit" loading={loading}>
-              회원가입
-            </Button>
-            <p className="text-sm text-center">
-              이미 계정이 있으신가요?{" "}
-              <span
-                className="text-teal-600 cursor-pointer hover:underline"
-                onClick={() => {
-                  setError("");
-                  setMode("signin");
-                }}
-              >
-                로그인
-              </span>
-            </p>
-          </form>
+          <SignupForm
+            signupForm={signupForm}
+            onChange={handleSignupChange}
+            onSubmit={submitSignup}
+            loading={loading}
+            error={mode === "signup" ? error : ""}
+            switchToSignin={() => {
+              setError("");
+              setMode("signin");
+            }}
+          />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
