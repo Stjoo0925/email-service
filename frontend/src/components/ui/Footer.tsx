@@ -17,7 +17,7 @@ const GithubIcon = () => (
 
 const Footer: React.FC = () => {
   return (
-    <footer className="mt-4 lg:w-1/2 flex items-center justify-between text-white text-sm font-bold">
+    <footer className="mt-4 lg:w-1/2 flex items-center justify-between text-white text-sm font-bold select-none">
       <span>
         Copyright © {new Date().getFullYear()}. stjoo0925 all rights reserved.
       </span>

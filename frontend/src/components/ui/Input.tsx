@@ -4,11 +4,16 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
 }
 
-const Input: React.FC<InputProps> = ({ label, className = "", required, ...props }) => {
+const Input: React.FC<InputProps> = ({
+  label,
+  className = "",
+  required,
+  ...props
+}) => {
   return (
     <div className="flex flex-col gap-1">
       <label
-        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+        className="text-sm font-medium text-gray-700 dark:text-gray-300 select-none"
         htmlFor={props.id || props.name}
       >
         {label}

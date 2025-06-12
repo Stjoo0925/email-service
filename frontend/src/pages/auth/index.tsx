@@ -72,12 +72,14 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-emerald-500 to-teal-400 px-4">
-      <div className="text-5xl font-bold mb-6 text-white">Email Service</div>
-      <div className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden lg:flex">
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-emerald-500 to-teal-400 px-4">
+      <div className="text-5xl font-bold mb-6 text-white select-none">
+        Email Service
+      </div>
+      <div className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden lg:flex h-[60%]">
         {/* 슬라이드 패널 */}
         <div
-          className={`flex-1 p-8 transition-transform duration-700 lg:w-1/2 flex items-center justify-center ${
+          className={`flex-1 h-full p-8 transition-transform duration-700 lg:w-1/2 flex items-center justify-center ${
             mode === "signin"
               ? "translate-x-0"
               : "-translate-x-full lg:translate-x-0 lg:-translate-y-full"
@@ -98,7 +100,7 @@ const AuthPage: React.FC = () => {
 
         {/* 회원가입 폼 */}
         <div
-          className={`flex-1 p-8 transition-transform duration-700 lg:w-1/2 flex items-center justify-center ${
+          className={`flex-1 h-full p-8 transition-transform duration-700 lg:w-1/2 flex items-center justify-center ${
             mode === "signup"
               ? "translate-x-0"
               : "translate-x-full lg:translate-x-0 lg:translate-y-full"

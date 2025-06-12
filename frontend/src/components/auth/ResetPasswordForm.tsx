@@ -1,68 +1,61 @@
 import React from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import { useRouter } from "next/router";
 
-interface SignupFormData {
-  name: string;
+interface ResetPasswordFormData {
   email: string;
-  password: string;
-  confirmPassword: string;
+  token: string;
+  newPassword: string;
 }
 
-interface SignupFormProps {
-  signupForm: SignupFormData;
+interface ResetPasswordFormProps {
+  formData: ResetPasswordFormData;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
   loading: boolean;
   error?: string;
-  switchToSignin: () => void;
+  success?: string;
 }
 
-const SignupForm: React.FC<SignupFormProps> = ({
-  signupForm,
+const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
+  formData,
   onChange,
   onSubmit,
   loading,
   error = "",
-  switchToSignin,
+  success = "",
 }) => {
+  const router = useRouter();
   return (
     <div className="flex flex-col items-center justify-center h-full w-full">
       <h2 className="text-3xl font-bold mb-6 text-teal-600 select-none">
-        회원가입
+        비밀번호 재설정
       </h2>
       <form onSubmit={onSubmit} className="space-y-4 w-full">
-        <Input
-          label="이름"
-          name="name"
-          value={signupForm.name}
-          onChange={onChange}
-          required
-          autoComplete="off"
-        />
         <Input
           label="이메일"
           type="email"
           name="email"
-          value={signupForm.email}
+          value={formData.email}
           onChange={onChange}
           required
           autoComplete="off"
         />
         <Input
-          label="비밀번호"
-          type="password"
-          name="password"
-          value={signupForm.password}
+          label="토큰"
+          type="text"
+          name="token"
+          value={formData.token}
           onChange={onChange}
           required
           autoComplete="off"
         />
         <Input
-          label="비밀번호 확인"
+          label="새 비밀번호"
           type="password"
-          name="confirmPassword"
-          value={signupForm.confirmPassword}
+          name="newPassword"
+          value={formData.newPassword}
           onChange={onChange}
           required
           autoComplete="off"
@@ -72,25 +65,22 @@ const SignupForm: React.FC<SignupFormProps> = ({
             {error}
           </p>
         )}
+        {success && (
+          <p className="text-sm text-emerald-600" role="alert">
+            {success}
+          </p>
+        )}
         <Button
           type="submit"
           loading={loading}
-          className="mx-auto block select-none"
+          className="block select-none"
+          onClick={() => router.push("/auth")}
         >
-          회원가입
+          비밀번호 변경
         </Button>
-        <p className="text-sm text-center select-none">
-          이미 계정이 있으신가요?{" "}
-          <span
-            className="text-teal-600 cursor-pointer hover:underline select-none"
-            onClick={switchToSignin}
-          >
-            로그인
-          </span>
-        </p>
       </form>
     </div>
   );
 };
 
-export default SignupForm;
+export default ResetPasswordForm;
