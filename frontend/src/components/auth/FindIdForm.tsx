@@ -15,6 +15,7 @@ interface FindIdFormProps {
   loading: boolean;
   error?: string;
   success?: string;
+  onBack?: () => void;
 }
 
 const FindIdForm: React.FC<FindIdFormProps> = ({
@@ -24,8 +25,16 @@ const FindIdForm: React.FC<FindIdFormProps> = ({
   loading,
   error = "",
   success = "",
+  onBack,
 }) => {
   const router = useRouter();
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      router.push("/auth");
+    }
+  };
   return (
     <div className="flex flex-col items-center justify-center h-full w-full">
       <h2 className="text-3xl font-bold mb-6 text-emerald-600 select-none">
@@ -67,7 +76,7 @@ const FindIdForm: React.FC<FindIdFormProps> = ({
           <Button
             type="button"
             className="block select-none"
-            onClick={() => router.push("/auth")}
+            onClick={handleBack}
           >
             돌아가기
           </Button>

@@ -14,6 +14,7 @@ interface ForgotPasswordFormProps {
   loading: boolean;
   error?: string;
   success?: string;
+  onBack?: () => void;
 }
 
 const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
@@ -23,8 +24,16 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   loading,
   error = "",
   success = "",
+  onBack,
 }) => {
   const router = useRouter();
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      router.push("/auth");
+    }
+  };
   return (
     <div className="flex flex-col items-center justify-center h-full w-full">
       <h2 className="text-3xl font-bold mb-6 text-emerald-600 select-none">
@@ -57,7 +66,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           <Button
             type="button"
             className="block select-none"
-            onClick={() => router.push("/auth")}
+            onClick={handleBack}
           >
             돌아가기
           </Button>

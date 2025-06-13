@@ -1,7 +1,6 @@
 import React from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
-import { useRouter } from "next/router";
 
 interface LoginFormData {
   email: string;
@@ -15,6 +14,8 @@ interface LoginFormProps {
   loading: boolean;
   error?: string;
   switchToSignup: () => void;
+  switchToFindId: () => void;
+  switchToForgotPassword: () => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
@@ -24,8 +25,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
   loading,
   error = "",
   switchToSignup,
+  switchToFindId,
+  switchToForgotPassword,
 }) => {
-  const router = useRouter();
   return (
     <div className="flex flex-col items-center justify-center h-full w-full">
       <h2 className="text-3xl font-bold mb-6 text-emerald-600 select-none">
@@ -62,15 +64,15 @@ const LoginForm: React.FC<LoginFormProps> = ({
           <div className="flex gap-2">
             <Button
               type="button"
-              className="bg-none text-black text-sm select-none shadow-none"
-              onClick={() => router.push("/auth/forgot-id")}
+              className="text-sm select-none shadow-none"
+              onClick={switchToFindId}
             >
               아이디 찾기
             </Button>
             <Button
               type="button"
-              className="bg-none text-black text-sm select-none shadow-none"
-              onClick={() => router.push("/auth/forgot-password")}
+              className="text-sm select-none shadow-none"
+              onClick={switchToForgotPassword}
             >
               비밀번호 찾기
             </Button>
