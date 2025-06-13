@@ -39,6 +39,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
           onChange={onChange}
           required
           autoComplete="off"
+          placeholder="홍길동"
         />
         <Input
           label="이메일"
@@ -48,6 +49,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
           onChange={onChange}
           required
           autoComplete="off"
+          placeholder="example@email.com"
         />
         <Input
           label="비밀번호"
@@ -57,6 +59,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
           onChange={onChange}
           required
           autoComplete="off"
+          placeholder="********"
         />
         <Input
           label="비밀번호 확인"
@@ -66,6 +69,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
           onChange={onChange}
           required
           autoComplete="off"
+          placeholder="********"
         />
         {error && (
           <p className="text-sm text-red-500" role="alert">

@@ -48,6 +48,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           onChange={onChange}
           required
           autoComplete="off"
+          placeholder="example@email.com"
         />
         {error && (
           <p className="text-sm text-red-500" role="alert">

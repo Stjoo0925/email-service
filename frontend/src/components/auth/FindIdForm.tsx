@@ -49,6 +49,7 @@ const FindIdForm: React.FC<FindIdFormProps> = ({
           onChange={onChange}
           required
           autoComplete="off"
+          placeholder="홍길동"
         />
         <Input
           label="이메일"
@@ -58,6 +59,7 @@ const FindIdForm: React.FC<FindIdFormProps> = ({
           onChange={onChange}
           required
           autoComplete="off"
+          placeholder="example@email.com"
         />
         {error && (
           <p className="text-sm text-red-500" role="alert">

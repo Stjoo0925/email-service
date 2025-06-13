@@ -33,7 +33,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       <h2 className="text-3xl font-bold mb-6 text-emerald-600 select-none">
         로그인
       </h2>
-      <form onSubmit={onSubmit} className="space-y-4 w-full">
+      <form onSubmit={onSubmit} className="space-y-4 w-full select-none">
         <Input
           label="이메일"
           type="email"
@@ -42,6 +42,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           onChange={onChange}
           required
           autoComplete="off"
+          placeholder="example@email.com"
         />
         <Input
           label="비밀번호"
@@ -51,6 +52,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           onChange={onChange}
           required
           autoComplete="off"
+          placeholder="********"
         />
         {error && (
           <p className="text-sm text-red-500" role="alert">
