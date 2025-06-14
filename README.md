@@ -44,10 +44,14 @@ EMAIL-SERVICE/
 │   └── Dockerfile
 ├── frontend/
 │   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   └── assets/
+│   │   ├── components/   # UI 및 인증 관련 폼 컴포넌트
+│   │   │   ├── ui/      # 공통 UI(Button, Input, Footer 등)
+│   │   │   └── auth/    # 로그인, 회원가입, 비밀번호/아이디 찾기 폼
+│   │   ├── pages/       # Next.js 라우트(메인, 인증, 비밀번호/아이디 찾기 등)
+│   │   ├── services/    # axios 인스턴스 등 API 통신 설정
+│   │   ├── hooks/       # 인증 가드 등 커스텀 훅
+│   │   ├── utils/       # 쿠키 등 유틸 함수
+│   │   └── assets/      # 스타일(css), 이미지
 │   ├── package.json
 │   └── Dockerfile
 ├── docker-compose.yml
@@ -151,8 +155,11 @@ http://localhost:8080/swagger-ui/index.html
 
 - Next.js 15.x 기반
 - Tailwind CSS로 스타일링
-- Axios로 API 통신
-- React Hooks 사용
+- Axios로 API 통신 (src/services/axiosInstance.ts)
+- React Hooks 사용 (src/hooks/useAuthGuard.ts 등)
+- 인증/회원가입/비밀번호 찾기 등은 src/components/auth 폴더의 폼 컴포넌트로 분리
+- 공통 UI(Button, Input, Footer)는 src/components/ui 폴더에 위치
+- 쿠키, 인증 가드 등은 utils, hooks 폴더에 위치
 
 ### 7.3. Docker 개발
 
