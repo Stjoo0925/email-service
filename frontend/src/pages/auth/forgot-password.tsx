@@ -23,7 +23,7 @@ const ForgotPasswordPage: React.FC = () => {
     setError("");
     setSuccess("");
     try {
-      await axiosInstance.post("/auth/reset-password/request", null, {
+      await axiosInstance.post("/api/auth/reset-password/request", null, {
         params: { email: formData.email },
       });
       setSuccess("재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.");

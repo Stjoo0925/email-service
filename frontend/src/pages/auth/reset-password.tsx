@@ -25,7 +25,7 @@ const ResetPasswordPage: React.FC = () => {
     setError("");
     setSuccess("");
     try {
-      await axiosInstance.post("/auth/reset-password", formData);
+      await axiosInstance.post("/api/auth/reset-password", formData);
       setSuccess(
         "비밀번호가 성공적으로 변경되었습니다. 로그인 페이지로 이동합니다."
       );

@@ -23,7 +23,7 @@ const ForgotIdPage: React.FC = () => {
     setError("");
     setSuccess("");
     try {
-      await axiosInstance.post("/auth/find-id", formData);
+      await axiosInstance.post("/api/auth/find-id", formData);
       setSuccess(
         "등록된 이메일로 아이디가 발송되었습니다. 이메일을 확인해주세요."
       );

@@ -1,6 +1,7 @@
 package com.example.loginproject.service;
 
 import com.example.loginproject.entity.Otp;
+import com.example.loginproject.entity.Otp.OtpType;
 import com.example.loginproject.repository.OtpRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class OtpService {
 
         // 새로운 OTP 생성
         String otpCode = generateOtp();
-        Otp otp = new Otp(email, otpCode);
+        Otp otp = new Otp(email, otpCode, OtpType.EMAIL_VERIFICATION);
         otpRepository.save(otp);
 
         // 이메일 발송

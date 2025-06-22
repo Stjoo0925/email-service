@@ -40,7 +40,7 @@ services:
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
       # API URL 설정
-      API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
     depends_on:
       mysql:
         condition: service_healthy

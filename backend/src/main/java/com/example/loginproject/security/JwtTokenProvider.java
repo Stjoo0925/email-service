@@ -25,7 +25,17 @@ public class JwtTokenProvider {
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds,
             UserDetailsService userDetailsService) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        try {
+            if (secret == null || secret.length() < 32) {
+                byte[] hash = java.security.MessageDigest.getInstance("SHA-256").digest(secret.getBytes());
+                this.key = Keys.hmacShaKeyFor(hash);
+                log.warn("JWT secret key length가 부족하여 SHA-256 해시로 보강했습니다. 원본 길이: {} bytes", secret == null ? 0 : secret.length());
+            } else {
+                this.key = Keys.hmacShaKeyFor(secret.getBytes());
+            }
+        } catch (java.security.NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 Algorithm not available", e);
+        }
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
         this.userDetailsService = userDetailsService;
     }

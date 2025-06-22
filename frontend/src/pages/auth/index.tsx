@@ -6,7 +6,7 @@ import SignupForm from "../../components/auth/SignupForm";
 import ForgotPasswordForm from "../../components/auth/ForgotPasswordForm";
 import FindIdForm from "../../components/auth/FindIdForm";
 import Footer from "../../components/ui/Footer";
-import { Send  } from 'lucide-react';
+import { Send } from "lucide-react";
 
 // Tailwind 기반 슬라이드 전환형 로그인/회원가입 단일 페이지
 const AuthPage: React.FC = () => {
@@ -68,7 +68,7 @@ const AuthPage: React.FC = () => {
     setLoading(true);
     setError("");
     try {
-      const { data } = await axiosInstance.post("/auth/login", loginForm);
+      const { data } = await axiosInstance.post("/api/auth/login", loginForm);
       // 쿠키 저장
       document.cookie = `token=${data.token}; path=/; SameSite=Strict; secure`;
       router.push("/");
@@ -88,7 +88,7 @@ const AuthPage: React.FC = () => {
     setLoading(true);
     setError("");
     try {
-      await axiosInstance.post("/auth/signup", {
+      await axiosInstance.post("/api/auth/signup", {
         name: signupForm.name,
         email: signupForm.email,
         password: signupForm.password,
@@ -108,10 +108,12 @@ const AuthPage: React.FC = () => {
     setForgotError("");
     setForgotSuccess("");
     try {
-      await axiosInstance.post("/auth/reset-password/request", null, {
+      await axiosInstance.post("/api/auth/reset-password/request", null, {
         params: { email: forgotForm.email },
       });
-      setForgotSuccess("재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.");
+      setForgotSuccess(
+        "재설정 이메일이 발송되었습니다. 이메일을 확인해주세요."
+      );
       setMode("forgotPasswordDone");
     } catch (err: any) {
       setForgotError(err.response?.data?.message || "이메일 발송 실패");
@@ -126,8 +128,10 @@ const AuthPage: React.FC = () => {
     setFindError("");
     setFindSuccess("");
     try {
-      await axiosInstance.post("/auth/find-id", findIdForm);
-      setFindSuccess("등록된 이메일로 아이디가 발송되었습니다. 이메일을 확인해주세요.");
+      await axiosInstance.post("/api/auth/find-id", findIdForm);
+      setFindSuccess(
+        "등록된 이메일로 아이디가 발송되었습니다. 이메일을 확인해주세요."
+      );
       setMode("findIdDone");
     } catch (err: any) {
       setFindError(err.response?.data?.message || "아이디 찾기 실패");
@@ -139,16 +143,14 @@ const AuthPage: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-emerald-500 to-teal-400 px-4">
       <div className="flex items-center gap-2 text-5xl font-bold mb-6 text-white select-none">
-        <Send  className="w-12 h-12 mr-1" />
+        <Send className="w-12 h-12 mr-1" />
         Email Service
       </div>
       <div className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden h-[60%]">
         {/* 로그인 패널 */}
         <div
           className={`absolute inset-0 w-full h-full p-8 transition-transform duration-700 flex items-center justify-center ${
-            mode === "signin"
-              ? "translate-y-0"
-              : "-translate-y-full"
+            mode === "signin" ? "translate-y-0" : "-translate-y-full"
           }`}
         >
           <LoginForm
@@ -173,9 +175,7 @@ const AuthPage: React.FC = () => {
         {/* 회원가입 폼 */}
         <div
           className={`absolute inset-0 w-full h-full p-8 transition-transform duration-700 flex items-center justify-center ${
-            mode === "signup"
-              ? "translate-y-0"
-              : "translate-y-full"
+            mode === "signup" ? "translate-y-0" : "translate-y-full"
           }`}
         >
           <SignupForm
@@ -194,9 +194,7 @@ const AuthPage: React.FC = () => {
         {/* 비밀번호 재설정 폼 */}
         <div
           className={`absolute inset-0 w-full h-full p-8 transition-transform duration-700 flex items-center justify-center ${
-            mode === "forgotPasswordForm"
-              ? "translate-y-0"
-              : "translate-y-full"
+            mode === "forgotPasswordForm" ? "translate-y-0" : "translate-y-full"
           }`}
         >
           <ForgotPasswordForm
@@ -213,9 +211,7 @@ const AuthPage: React.FC = () => {
         {/* 비밀번호 재설정 완료 */}
         <div
           className={`absolute inset-0 w-full h-full p-8 transition-transform duration-700 flex items-center justify-center ${
-            mode === "forgotPasswordDone"
-              ? "translate-y-0"
-              : "translate-y-full"
+            mode === "forgotPasswordDone" ? "translate-y-0" : "translate-y-full"
           }`}
         >
           <div className="text-center space-y-6">
@@ -235,9 +231,7 @@ const AuthPage: React.FC = () => {
         {/* 아이디 찾기 폼 */}
         <div
           className={`absolute inset-0 w-full h-full p-8 transition-transform duration-700 flex items-center justify-center ${
-            mode === "findIdForm"
-              ? "translate-y-0"
-              : "translate-y-full"
+            mode === "findIdForm" ? "translate-y-0" : "translate-y-full"
           }`}
         >
           <FindIdForm
@@ -254,9 +248,7 @@ const AuthPage: React.FC = () => {
         {/* 아이디 찾기 완료 */}
         <div
           className={`absolute inset-0 w-full h-full p-8 transition-transform duration-700 flex items-center justify-center ${
-            mode === "findIdDone"
-              ? "translate-y-0"
-              : "translate-y-full"
+            mode === "findIdDone" ? "translate-y-0" : "translate-y-full"
           }`}
         >
           <div className="text-center space-y-6">

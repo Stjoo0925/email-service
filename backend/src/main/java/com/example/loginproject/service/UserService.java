@@ -6,15 +6,17 @@ import com.example.loginproject.dto.FindIdRequestDto;
 import com.example.loginproject.dto.ResetPasswordRequestDto;
 import com.example.loginproject.entity.User;
 import com.example.loginproject.entity.PasswordResetToken;
-import com.example.loginproject.jwt.JwtTokenProvider;
 import com.example.loginproject.repository.UserRepository;
 import com.example.loginproject.repository.PasswordResetTokenRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.loginproject.security.JwtTokenProvider;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
+import com.example.loginproject.exception.BusinessException;
+import com.example.loginproject.exception.ErrorCode;
 
 @Service
 @RequiredArgsConstructor
@@ -31,21 +33,23 @@ public class UserService {
 
     public User signup(SignupRequestDto dto) {
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new RuntimeException("이미 가입된 이메일입니다.");
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
         }
         User user = User.builder()
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
+                .emailVerified(false)
+                .role(User.UserRole.ROLE_USER)
                 .build();
         return userRepository.save(user);
     }
 
     public String login(LoginRequestDto dto) {
         User user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("가입되지 않은 이메일입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }
         return jwtTokenProvider.createToken(user.getEmail());
     }
@@ -57,7 +61,7 @@ public class UserService {
     @Transactional
     public void findId(FindIdRequestDto dto) {
         User user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("가입되지 않은 이메일입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
         
         if (!user.getName().equals(dto.getName())) {
             throw new RuntimeException("이름이 일치하지 않습니다.");
@@ -73,7 +77,7 @@ public class UserService {
     @Transactional
     public void requestPasswordReset(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("가입되지 않은 이메일입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
         // 기존 토큰 삭제
         passwordResetTokenRepository.deleteByEmail(email);
@@ -94,14 +98,14 @@ public class UserService {
     public void resetPassword(ResetPasswordRequestDto dto) {
         PasswordResetToken token = passwordResetTokenRepository
                 .findByEmailAndTokenAndUsedFalse(dto.getEmail(), dto.getToken())
-                .orElseThrow(() -> new RuntimeException("유효하지 않은 토큰입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_OTP));
 
         if (!token.isValid()) {
             throw new RuntimeException("만료된 토큰입니다.");
         }
 
         User user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         userRepository.save(user);
