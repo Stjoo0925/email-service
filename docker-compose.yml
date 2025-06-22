@@ -53,7 +53,7 @@ services:
     build: ./frontend
     container_name: email-service-frontend
     environment:
-      NEXT_PUBLIC_API_BASE_URL: ${SPRING_BASE_URL}
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_SPRING_BASE_URL}
     depends_on:
       - backend
     networks:
