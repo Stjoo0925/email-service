@@ -4,13 +4,13 @@ import com.example.loginproject.dto.LoginRequestDto;
 import com.example.loginproject.dto.SignupRequestDto;
 import com.example.loginproject.dto.FindIdRequestDto;
 import com.example.loginproject.dto.ResetPasswordRequestDto;
-import com.example.loginproject.entity.User;
 import com.example.loginproject.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,7 +22,7 @@ public class AuthController {
     @Operation(summary = "회원가입", description = "이메일, 비밀번호, 이름을 입력하여 회원가입을 진행합니다.")
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequestDto dto) {
-        User user = userService.signup(dto);
+        com.example.loginproject.entity.User user = userService.signup(dto);
         return ResponseEntity.ok(user);
     }
 
@@ -30,7 +30,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto dto) {
         String token = userService.login(dto);
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(java.util.Map.of("token", token));
     }
 
     @Operation(summary = "아이디 찾기", description = "이름과 이메일을 입력하여 등록된 이메일(아이디)을 확인합니다.")
@@ -52,6 +52,24 @@ public class AuthController {
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequestDto dto) {
         userService.resetPassword(dto);
         return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
+    }
+
+    @Operation(summary = "내 정보", description = "현재 로그인한 사용자의 정보를 조회합니다.")
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal org.springframework.security.core.userdetails.UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+        String email = userDetails.getUsername();
+        com.example.loginproject.entity.User user = userService.getUserByEmail(email);
+        com.example.loginproject.dto.UserInfoDto dto = com.example.loginproject.dto.UserInfoDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .emailVerified(user.isEmailVerified())
+                .createdAt(user.getCreatedAt())
+                .build();
+        return ResponseEntity.ok(dto);
     }
 
     // 이메일 인증, 비밀번호 찾기 등은 추후 구현

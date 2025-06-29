@@ -43,6 +43,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         <Input
           label="이메일"
           type="email"
+          id="forgot-email"
           name="email"
           value={formData.email}
           onChange={onChange}

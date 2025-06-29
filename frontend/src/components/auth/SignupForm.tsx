@@ -34,6 +34,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
       <form onSubmit={onSubmit} className="space-y-4 w-full">
         <Input
           label="이름"
+          id="signup-name"
           name="name"
           value={signupForm.name}
           onChange={onChange}
@@ -43,6 +44,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
         />
         <Input
           label="이메일"
+          id="signup-email"
           type="email"
           name="email"
           value={signupForm.email}
@@ -53,6 +55,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
         />
         <Input
           label="비밀번호"
+          id="signup-password"
           type="password"
           name="password"
           value={signupForm.password}
@@ -63,6 +66,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
         />
         <Input
           label="비밀번호 확인"
+          id="signup-confirmPassword"
           type="password"
           name="confirmPassword"
           value={signupForm.confirmPassword}

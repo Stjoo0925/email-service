@@ -18,8 +18,22 @@ const axiosInstance: AxiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = typeof window !== "undefined" ? getCookie("token") : null;
-    if (token && config.headers)
+    console.log(
+      "Axios 인터셉터 - 토큰:",
+      token ? `${token.substring(0, 20)}...` : "null"
+    );
+    if (
+      token &&
+      token !== "undefined" &&
+      token !== "null" &&
+      token.trim() !== "" &&
+      config.headers
+    ) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log("Axios 인터셉터 - Authorization 헤더 설정됨");
+    } else {
+      console.log("Axios 인터셉터 - 토큰 없음 또는 유효하지 않음:", token);
+    }
     return config;
   },
   (error) => Promise.reject(error)

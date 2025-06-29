@@ -70,8 +70,17 @@ const AuthPage: React.FC = () => {
     try {
       const { data } = await axiosInstance.post("/api/auth/login", loginForm);
       // 쿠키 저장
-      document.cookie = `token=${data.token}; path=/; SameSite=Strict; secure`;
-      router.push("/");
+      if (data && typeof data === "string") {
+        // 백엔드가 토큰을 문자열로 직접 반환하는 경우
+        document.cookie = `token=${data}; path=/; SameSite=Strict; secure`;
+        router.push("/profile");
+      } else if (data && data.token) {
+        // 백엔드가 JSON 객체로 반환하는 경우
+        document.cookie = `token=${data.token}; path=/; SameSite=Strict; secure`;
+        router.push("/profile");
+      } else {
+        setError("토큰을 받지 못했습니다.");
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || "로그인 실패");
     } finally {

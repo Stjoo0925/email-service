@@ -37,6 +37,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         <Input
           label="이메일"
           type="email"
+          id="login-email"
           name="email"
           value={loginForm.email}
           onChange={onChange}
@@ -47,6 +48,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         <Input
           label="비밀번호"
           type="password"
+          id="login-password"
           name="password"
           value={loginForm.password}
           onChange={onChange}

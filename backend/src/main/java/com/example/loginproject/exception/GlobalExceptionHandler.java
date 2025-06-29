@@ -8,6 +8,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @RestControllerAdvice
@@ -46,5 +47,12 @@ public class GlobalExceptionHandler {
         log.error("Unexpected Exception: ", e);
         ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(response, ErrorCode.INTERNAL_SERVER_ERROR.getStatus());
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
+        log.error("Resource not found: {}", e.getMessage());
+        ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, org.springframework.http.HttpStatus.NOT_FOUND);
     }
 }

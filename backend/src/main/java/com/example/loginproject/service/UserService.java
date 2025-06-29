@@ -113,4 +113,9 @@ public class UserService {
         token.setUsed(true);
         passwordResetTokenRepository.save(token);
     }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+    }
 }

@@ -22,10 +22,10 @@ const useAuthGuard = () => {
     const publicPaths = ["/auth"];
     const isPublic = publicPaths.some((p) => router.pathname.startsWith(p));
 
-    if (!token && !isPublic) {
+    if ((!token || token === "undefined" || token === "null") && !isPublic) {
       // 미인증 상태로 보호된 경로 접근 시 로그인으로 이동
       router.replace("/auth");
-    } else if (token && isPublic) {
+    } else if (token && token !== "undefined" && token !== "null" && isPublic) {
       // 이미 인증된 사용자가 퍼블릭 경로 접근 시 홈으로 이동
       router.replace("/");
     }
